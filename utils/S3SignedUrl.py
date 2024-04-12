@@ -2,7 +2,7 @@ import boto3
 
 
 def get_music_with_signed_url(music):
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', region_name='us-east-1')
 
     for song in music:
         print(song)
