@@ -1,14 +1,22 @@
 import boto3
 import json
+
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table('music')
 
 
 def lambda_handler(event, context):
     # Extract query parameters from the event
-    title = event.get('title')
-    artist = event.get('artist')
-    year = event.get('year')
+
+    # Extract query parameters from the event
+    title = None
+    artist = None
+    year = None
+
+    if event.get('queryStringParameters') is not None:
+        title = event.get('queryStringParameters').get('title')
+        artist = event.get('queryStringParameters').get('artist')
+        year = event.get('queryStringParameters').get('year')
 
     print(title, artist, year)
     # Construct the filter expression and expression attribute values for the query
@@ -32,7 +40,10 @@ def lambda_handler(event, context):
     # If no query parameters are provided, return all music items
     if not (title or artist or year):
         response = table.scan()
-        return response.get('Items', [])
+
+        music_list = response.get('Items', [])
+        limited_music_list = music_list[:10]
+        return json.dumps(limited_music_list)
 
     # Construct the filter expression string
     filter_expression_str = ' AND '.join(filter_expression)
@@ -43,19 +54,21 @@ def lambda_handler(event, context):
         ExpressionAttributeNames=expression_attribute_names,
         ExpressionAttributeValues=expression_attribute_values
     )
-    print(filter_expression_str, expression_attribute_names, expression_attribute_values)
 
     # Extract the list of music items from the response
     music_list = response.get('Items', [])
+    limited_music_list = music_list[:10]
 
     if not music_list:
         return {
             'statusCode': 400,
-            'body': json.dumps('No music items found')
+            'body': json.dumps({'message': 'No music items found'})
         }
     else:
         return {
             'statusCode': 200,
-            'body': json.dumps(music_list)
+            'body': json.dumps(limited_music_list)
         }
 
+
+print(lambda_handler({}, None))

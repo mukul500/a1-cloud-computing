@@ -13,7 +13,7 @@ def put_items(songs):
         artist = song['artist']
         year = song['year']
         web_url = song['web_url']
-        image_url = f"s3://{bucket_name}/{song['img_s3_key']}"
+        image_url = song['img_s3_key']
 
         # Put item into DynamoDB table
         table.put_item(

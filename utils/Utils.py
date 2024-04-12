@@ -14,6 +14,8 @@ user_table = dynamodb.Table('login')
 
 def verify_user(email, password):
     user = get_user(email)
+    if user is None:
+        return False
     if not user or user['password'] != password:
         return False
     return True

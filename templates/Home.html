@@ -79,6 +79,13 @@
       font-weight: bold;
     }
 
+
+
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -89,18 +96,6 @@
         <div class="welcome-message">Welcome, {{ session.username }}</div>
     </div>
 
-    <!-- Tab buttons -->
-    <div class="tab-buttons">
-        <button class="tab-button" onclick="openTab(event, 'user')">User Area</button>
-        <button class="tab-button" onclick="openTab(event, 'subscription')">Subscription Area</button>
-        <button class="tab-button" onclick="openTab(event, 'query')">Query Area</button>
-    </div>
-
-    <!-- Tab content -->
-    <div class="tab-content" id="user">
-        <h2>User Area</h2>
-        <!-- Add user area content here -->
-    </div>
 
     <div id="subscription" class="tab">
         <h3>Your Subscribed Music</h3>
@@ -111,16 +106,50 @@
                 <div class="music-details">
                     <h4>{{ music.title }}</h4>
                     <p>Year: {{ music.year }}</p>
+                    <form method="POST" action="{{ url_for('unsubscribe') }}">
+                            <input type="hidden" name="title" value="{{ music.title }}">
+                            <button type="submit" class="subscribe-button">Unsubscribe</button>
+                        </form>
                 </div>
-                <img src="{{ music.img_url }}" alt="{{ music.title }}" class="music-image">
+                <img src="{{ music.image_url }}" alt="{{ music.title }}" class="music-image">
             </li>
             {% endfor %}
         </ul>
     </div>
 
-    <div class="tab-content" id="query">
-        <h2>Query Area</h2>
-        <!-- Add query area content here -->
+    <div id="query" class="tab">
+        <h2>Query Music</h2>
+        <form method="POST" action="{{ url_for('search') }}">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" class="text-field">
+            <br>
+            <label for="artist">Artist:</label>
+            <input type="text" id="artist" name="artist" class="text-field">
+            <br>
+            <label for="year">Year:</label>
+            <input type="text" id="year" name="year" class="text-field">
+            <br>
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        <div class="search-results">
+            <h3>Search Result</h3>
+            <ul class="music-list">
+                <!-- Iterate over the list of music and display each item -->
+                {% for music in query_music %}
+                <li class="music-item">
+                    <div class="music-details">
+                        <h4>{{ music.title }}</h4>
+                        <p>Year: {{ music.year }}</p>
+                        <form method="POST" action="{{ url_for('subscribe') }}">
+                            <input type="hidden" name="title" value="{{ music.title }}">
+                            <button type="submit" class="subscribe-button">Subscribe</button>
+                        </form>
+                    </div>
+                    <img src="{{ music.image_url }}" alt="{{ music.title }}" class="music-image">
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
     <!-- Logout link -->
@@ -129,27 +158,5 @@
     </div>
 </div>
 
-<script>
-    function openTab(evt, tabName) {
-      var i, tabcontent, tablinks;
-
-      // Hide all tab content
-      tabcontent = document.getElementsByClassName("tab-content");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-
-      // Deactivate all tab buttons
-      tablinks = document.getElementsByClassName("tab-button");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
-      }
-
-      // Show the selected tab and activate its button
-      document.getElementById(tabName).style.display = "block";
-      evt.currentTarget.classList.add("active");
-    }
-
-</script>
 </body>
 </html>
