@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Success</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    .success-container {
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 48px;
+      color: #28a745;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="success-container">
+      <i class="fa fa-check-circle success-icon"></i>
+      <h1>Success!</h1>
+      <p>Your registration was successful.</p>
+      <p><a href="/login" class="button">Login</a></p>
+    </div>
+  </div>
+</body>
+</html>
