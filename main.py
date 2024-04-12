@@ -61,8 +61,7 @@ def logout():
 @app.route('/home')
 def home():
     subscribed_music = get_subscribed_music(session['email'])
-    subscribed_music_with_image = get_music_with_signed_url(subscribed_music)
-    return render_template('Home.html', subscribed_music=subscribed_music_with_image)
+    return render_template('Home.html', subscribed_music=subscribed_music)
 
 
 @app.route('/search', methods=['POST'])
@@ -75,9 +74,8 @@ def search():
         print(request.form)
         print(f"Title: {title}, Artist: {artist}, Year: {year}")
         music_list = query_music(title, artist, year)
-        music_list_with_image = get_music_with_signed_url(music_list)
         print("--------------------")
-        return render_template('Home.html', query_music=music_list_with_image[:1])
+        return render_template('Home.html', query_music=music_list[:1])
 
     return redirect(url_for('home'))
 
