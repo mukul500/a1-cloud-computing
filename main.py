@@ -28,7 +28,7 @@ def login():
         session['username'] = email
         return redirect(url_for('home'))
 
-    return render_template('login.html')
+    return render_template('Login.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -47,7 +47,7 @@ def register():
         session['username'] = username
         return redirect(url_for('home'))
 
-    return render_template('register.html')
+    return render_template('Register.html')
 
 
 @app.route('/logout')
@@ -59,8 +59,8 @@ def logout():
 @app.route('/home')
 def home():
     subscribed_music = get_subscribed_music(session['email'])
-    return render_template('home.html', subscribed_music=subscribed_music)
+    return render_template('Home.html', subscribed_music=subscribed_music)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
