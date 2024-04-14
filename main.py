@@ -75,7 +75,10 @@ def search():
         print(f"Title: {title}, Artist: {artist}, Year: {year}")
         music_list = query_music(title, artist, year)
         print("--------------------")
-        return render_template('Home.html', query_music=music_list[:1])
+        print(music_list)
+        if len(music_list) == 0:
+            return render_template('Home.html', query_music=[], searchError="No music found")
+        return render_template('Home.html', query_music=music_list)
 
     return redirect(url_for('home'))
 

@@ -3,13 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
+    <title>Music Home</title>
     <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f4f4f4;
+    }
+     input[type="text"] {
+     width: 100%;
+     padding: 10px;
+     border-radius: 5px;
+     border: 1px solid #ccc;
+     box-sizing: border-box;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      margin: 12px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+
+    .subscribe {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #41B06E;
+      color: #fff;
+      margin: 12px;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .unsubscribe {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #A34343;
+      color: #fff;
+      margin: 12px;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
     }
 
     .container {
@@ -34,39 +78,7 @@
       margin-bottom: 10px;
     }
 
-    .tab-buttons {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
 
-    .tab-button {
-      background-color: #f4f4f4;
-      border: none;
-      color: #333;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-      transition: background-color 0.3s;
-    }
-
-    .tab-button:hover {
-      background-color: #ddd;
-    }
-
-    .tab-content {
-      display: none;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-top: none;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
 
     .logout-link {
       text-align: center;
@@ -78,12 +90,6 @@
       text-decoration: none;
       font-weight: bold;
     }
-
-
-
-
-
-
 
 
     </style>
@@ -107,9 +113,9 @@
                     <h4>{{ music.title }}</h4>
                     <p>Year: {{ music.year }}</p>
                     <form method="POST" action="{{ url_for('unsubscribe') }}">
-                            <input type="hidden" name="title" value="{{ music.title }}">
-                            <button type="submit" class="subscribe-button">Unsubscribe</button>
-                        </form>
+                        <input type="hidden" name="title" value="{{ music.title }}">
+                        <button type="submit" class="unsubscribe">Unsubscribe</button>
+                    </form>
                 </div>
                 <img src="{{ music.image_url }}" alt="{{ music.title }}" class="music-image">
             </li>
@@ -129,10 +135,14 @@
             <label for="year">Year:</label>
             <input type="text" id="year" name="year" class="text-field">
             <br>
-            <button type="submit" class="search-button">Search</button>
+            <button type="submit" class="button">Search</button>
         </form>
         <div class="search-results">
             <h3>Search Result</h3>
+
+            {% if searchError %}
+            <p class="error-message">{{ searchError }}</p>
+            {% endif %}
             <ul class="music-list">
                 <!-- Iterate over the list of music and display each item -->
                 {% for music in query_music %}
@@ -142,7 +152,7 @@
                         <p>Year: {{ music.year }}</p>
                         <form method="POST" action="{{ url_for('subscribe') }}">
                             <input type="hidden" name="title" value="{{ music.title }}">
-                            <button type="submit" class="subscribe-button">Subscribe</button>
+                            <button type="submit" class="subscribe">Subscribe</button>
                         </form>
                     </div>
                     <img src="{{ music.image_url }}" alt="{{ music.title }}" class="music-image">

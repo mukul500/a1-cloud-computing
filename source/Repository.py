@@ -8,7 +8,7 @@ def get_user(email):
     user_url = api_url + "user"
     params = {'email': email}
     response = requests.get(user_url, params=params)
-    print(response.json())
+    print(response)
     if response.status_code == 200:
         return response.json()
     return None
