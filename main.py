@@ -24,7 +24,7 @@ def login():
 
         if not verify_user(email, password):
             error = 'Email or password is invalid'
-            return render_template('login.html', error=error)
+            return render_template('Login.html', error=error)
 
         session['email'] = email
         session['username'] = email
@@ -42,7 +42,7 @@ def register():
 
         if user_exists(email):
             error = 'Email already exists'
-            return render_template('register.html', error=error)
+            return render_template('Register.html', error=error)
 
         register_user(email, username, password)
         session['email'] = email
@@ -100,4 +100,4 @@ def unsubscribe():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
